@@ -1,0 +1,46 @@
+#*
+    renderTpl(String)
+    renderTpl(String, Map<String, Object>)
+    encrypt(String)
+    encrypt(String, String)
+    getVariable(String)
+    getVariable(String, Object)
+    getConfig(String, String)
+    getConfig(String)
+    getLayout()
+    getURI(String)
+    getToken()
+    getTokenName()
+    getTokenHeader()
+    getGuid()
+    getPageId()
+    setVariable(String, Object)
+    setLayout(String)
+    prepareLayout(StringWriter)
+    isRenderLayout()
+    isTemplateExist(String)
+*#
+
+## 禁用布局功能
+#macro(DisabledLayout)
+    $page.setLayout("")
+#end
+
+## 空逻辑输出
+#macro(Ignore $ignore)#set($_ = $ignore.toString())#end
+
+## 设置布局地址
+#macro(Extends $layoutName)
+    $page.setLayout($layoutName)
+#end
+
+## 获取外部模板
+#macro(External $templateName, $dataMap)
+    $page.renderTpl($templateName, $dataMap)
+#end
+
+## 引用静态模板
+#macro(Include $filename)
+    #include("${filename}.html")
+#end
+

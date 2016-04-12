@@ -1,11 +1,27 @@
-#block("title")
-    页面标题
-#end
+$page.setVariable("title", "页面标题")
 
-#block("mata")
-    <meta name="msapplication-TileImage" content="/windows-tile.png">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="selected-link" value="/mycoin" data-pjax-transient>
-#end
+<input value="$page.getToken()" type="hidden" />
+<input value="$page.getTokenName()" type="hidden" />
+<input value="$page.getTokenHeader()" type="hidden" />
 
-#Extends("common/work-layout")
+$page.getGuid()
+
+<script>
+$page.renderTpl("encrypt", {
+    "var": "encrypt",
+    "keyToken": "0123456789abcdef"
+})
+</script>
+
+
+<div class="main">
+    $page.renderTpl("go-search")
+    $page.renderTpl("output.html")
+    $page.renderTpl("sub-menu", {})
+</div>
+
+<div>
+encrypt(中文) = $page.encrypt('中文')<br>
+encrypt(123456) = $page.encrypt('123456')
+</div>
+$page.setLayout("common/work-layout")

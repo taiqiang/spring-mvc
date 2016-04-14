@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import net.breakidea.common.config.ConfigConstants;
+import net.breakidea.common.ConfigConstants;
 import net.breakidea.common.util.JsonUtils;
 
 import org.apache.velocity.util.StringUtils;
@@ -157,7 +157,7 @@ public class StringTool extends StringUtils {
      */
     public static Map<String, Object> parseJson( String json ) {
         try {
-            return JsonUtils.fromJson(json);
+            return JsonUtils.parse(json);
         } catch (Exception e) {
 
         }
@@ -232,7 +232,7 @@ public class StringTool extends StringUtils {
      */
     public static String toJson( Object source ) {
         try {
-            return JsonUtils.toJson(source);
+            return JsonUtils.stringify(source);
         } catch (Exception e) {
             return null;
         }

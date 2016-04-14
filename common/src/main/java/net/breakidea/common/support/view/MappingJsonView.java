@@ -8,7 +8,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.breakidea.common.config.ConfigConstants;
+import net.breakidea.common.ConfigConstants;
 import net.breakidea.common.util.JsonUtils;
 
 import org.apache.commons.logging.Log;
@@ -39,7 +39,7 @@ public class MappingJsonView extends AbstractView implements ConfigConstants {
     /**
      * Pattern for validating jsonp callback parameter values.
      */
-    private static final Pattern CALLBACK_PARAM_PATTERN = Pattern.compile("[0-9A-Za-z_\\.]*");
+    private static final Pattern CALLBACK_PARAM_PATTERN = Pattern.compile("[A-Za-z][0-9A-Za-z_\\.]*");
 
     private boolean disableCaching = true;
 
@@ -61,20 +61,20 @@ public class MappingJsonView extends AbstractView implements ConfigConstants {
      * @param model
      * @return
      */
-    private String getDefaultErrorJson( Map<String, Object> model ) {
+    private String getJsonResultText( Map<String, Object> model ) {
         String responseText = null;
         try {
-            responseText = JsonUtils.toJson(model);
+            responseText = JsonUtils.stringify(model);
         } catch (Exception e) {
             Map<String, Object> errorMap = new HashMap<String, Object>();
 
-            errorMap.put(STATUS_INFO_NAME, "Unsupported");
+            errorMap.put(STATUS_INFO_NAME, "Unsupported Model");
             errorMap.put(STATUS_NAME, 500);
             errorMap.put(DATA_NAME, e.getClass().getName());
 
             log.error("Unsupported Json Model.", e);
             try {
-                responseText = JsonUtils.toJson(errorMap);
+                responseText = JsonUtils.stringify(errorMap);
             } catch (Exception ex) {
                 responseText = "{}";
             }
@@ -121,7 +121,7 @@ public class MappingJsonView extends AbstractView implements ConfigConstants {
 
         String jsonpParameterValue = getJsonpParameterValue(request);
         ServletOutputStream out = response.getOutputStream();
-        String responseText = getDefaultErrorJson(model);
+        String responseText = getJsonResultText(model);
 
         if (null == jsonpParameterValue) {
             response.setContentType(CONTENT_TYPE);

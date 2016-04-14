@@ -5,7 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import net.breakidea.common.config.ConfigConstants;
+import net.breakidea.common.ConfigConstants;
 import net.breakidea.common.support.DigestSupport;
 import net.breakidea.common.util.ContextUtils;
 import net.breakidea.common.util.WebUtils;
@@ -43,7 +43,7 @@ public class Viewport implements ConfigConstants {
         this.context = (ViewToolContext) context;
         this.velocityView = view;
 
-        setVariable(SCREEN_KEY, 0);
+        setVariable(SCREEN_KEY, BLANK);
         setVariable(CONTEXT_NAME, this);
     }
 
@@ -99,7 +99,7 @@ public class Viewport implements ConfigConstants {
      * @throws Exception
      */
     public static String encrypt( String data, String key ) throws Exception {
-        return DigestSupport.DESEncode(data, key);
+        return DigestSupport.encrypt(data, key);
     }
 
     /**

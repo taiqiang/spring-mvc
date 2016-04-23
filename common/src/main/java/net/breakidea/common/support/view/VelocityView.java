@@ -1,26 +1,14 @@
-/*
- * Copyright 2002-2012 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package net.breakidea.common.support.view;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.StringWriter;
+import java.util.Properties;
 
 import javax.servlet.http.HttpServletResponse;
 
 import net.breakidea.common.ConfigConstants;
+import net.breakidea.common.util.ContextUtils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,39 +17,21 @@ import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.FatalBeanException;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.view.velocity.VelocityToolboxView;
 
 /**
- * VelocityView emulates the functionality offered by Velocity's
- * VelocityLayoutServlet to ease page composition from different templates.
- *
- * <p>The {@code url} property should be set to the content template
- * for the view, and the layout template location should be specified as
- * {@code layoutUrl} property. A view can override the configured
- * layout template location by setting the appropriate key (the default
- * is "layout") in the content template.
- *
- * <p>When the view is rendered, the VelocityContext is first merged with
- * the content template (specified by the {@code url} property) and
- * then merged with the layout template to produce the final output.
- *
- * <p>The layout template can include the screen content through a
- * VelocityContext variable (the default is "screen_content").
- * At runtime, this variable will contain the rendered content template.
+ * @author apple
  *
  */
 public final class VelocityView extends VelocityToolboxView implements ConfigConstants, RuntimeConstants {
 
     private Log logger = LogFactory.getLog(getClass());
 
-    /**
-     * Overrides the normal rendering process in order to pre-process the Context,
-     * merging it with the screen template into a single value (identified by the
-     * value of screenContentKey). The layout template is then merged with the
-     * modified Viewport in the super class.
-     */
+    private static String CONFIG_LOCATION = "/WEB-INF/velocity.properties";
+
     @Override
     protected void doRender( Context context, HttpServletResponse response ) throws Exception {
         Viewport page = new Viewport(this, context);
@@ -85,8 +55,10 @@ public final class VelocityView extends VelocityToolboxView implements ConfigCon
     }
 
     /**
-     * The resulting context contains any mappings from render, plus screen content.
+     * @param templateName
+     * @param velocityContext
      * @return
+     * @throws Exception
      */
     public StringWriter mergeTemplate( String templateName, Context velocityContext ) throws Exception {
         StringWriter out = new StringWriter();
@@ -107,15 +79,48 @@ public final class VelocityView extends VelocityToolboxView implements ConfigCon
     }
 
     @Override
-    protected void initApplicationContext() throws BeansException {
-        VelocityEngine velocityEngine = getVelocityEngine();
-
-        if (velocityEngine == null) {
-            velocityEngine = autodetectVelocityEngine();
-            velocityEngine.loadDirective(BlockDirective.class.getName());
-            super.initApplicationContext();
-        } else {
-            throw new FatalBeanException("init velocity engine with error");
+    protected VelocityEngine autodetectVelocityEngine() throws BeansException {
+        VelocityEngine velocityEngine;
+        setEncoding(CHARSET);
+        try {
+            Properties prop = PropertiesLoaderUtils.loadProperties(ContextUtils.getResource(CONFIG_LOCATION));
+            velocityEngine = new VelocityEngine(prop);
+        } catch (IOException e) {
+            velocityEngine = new VelocityEngine(new Properties());
         }
+
+        StringBuilder resolvedPath = new StringBuilder();
+        String[] paths = new String[] { "/WEB-INF/views", "classpath:internal", "/WEB-INF/external" };
+
+        for (int i = 0; i < paths.length; i++) {
+            String path = paths[i];
+            Resource resource = ContextUtils.getResource(path);
+            File file = null;
+            try {
+                file = resource.getFile();
+                resolvedPath.append(file.getAbsolutePath());
+                if (i < paths.length - 1) {
+                    resolvedPath.append(',');
+                }
+            } catch (IOException e) {
+
+            }
+        }
+
+        // 用户目录
+        resolvedPath.append("," + System.getProperty("user.home") + "/output");
+
+        velocityEngine.setProperty(VM_LIBRARY, "library.vm,macro.vm");
+        velocityEngine.setProperty(RESOURCE_LOADER, "file");
+        velocityEngine.setProperty(FILE_RESOURCE_LOADER_CACHE, "true");
+        velocityEngine.setProperty(FILE_RESOURCE_LOADER_PATH, resolvedPath.toString());
+        velocityEngine.setProperty(EVENTHANDLER_REFERENCEINSERTION, EscapeReference.class.getName());
+
+        if (logger.isInfoEnabled()) {
+            logger.info("set velocityTemplate loader path: " + resolvedPath);
+        }
+        velocityEngine.loadDirective(BlockDirective.class.getName());
+
+        return velocityEngine;
     }
 }

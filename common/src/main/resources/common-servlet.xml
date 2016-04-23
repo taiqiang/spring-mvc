@@ -15,22 +15,6 @@
     <!-- 默认配置 -->
     <context:property-placeholder location="classpath:default.properties" order="1024" />
 
-    <!-- 模板配置 -->
-    <bean class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
-        <property name="configLocation" value="/WEB-INF/velocity.properties" />
-        <property name="resourceLoaderPath">
-            <value>/WEB-INF/views,classpath:internal,/WEB-INF/external,file://${view.external.path}</value>
-        </property>
-        <property name="velocityProperties">
-            <props>
-                <prop key="input.encoding">utf-8</prop>
-                <prop key="output.encoding">utf-8</prop>
-                <prop key="velocimacro.library">library.vm,macro.vm</prop>
-                <prop key="eventhandler.referenceinsertion.class">net.breakidea.common.support.view.EscapeReference</prop>
-            </props>
-        </property>
-    </bean>
-
     <!-- 视图配置 -->
     <bean class="org.springframework.web.servlet.view.ViewResolverComposite">
         <property name="order" value="0" />

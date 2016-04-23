@@ -1,6 +1,4 @@
-#block("title")
-    默认标题
-#end
+#block("title")默认标题#end
 
 <style>
 pre {

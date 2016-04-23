@@ -16,4 +16,4 @@ var url = "$util.escapeJs('<a>测测试<b>x<span onclick="">s</span></b></a>')";
 </script>
 
 #external("output.html")
-#Extends("common/work-layout")
+#Extends("common/default")

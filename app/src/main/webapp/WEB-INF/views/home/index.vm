@@ -20,7 +20,6 @@ $page.renderTpl("encrypt", {
 <div class="main">
     $page.renderTpl("go-search")
     $page.renderTpl("output.html")
-    $page.renderTpl("sub-menu", {})
 </div>
 
 #set($textMap = ["中文", "1234567890", "Alibaba-inc", "&"])
@@ -28,4 +27,4 @@ $page.renderTpl("encrypt", {
 $page.encrypt($raw_item, "01g3456789abcdef")<br><script>document.write(encrypt("$raw_item"))</script><br><br>
 #end
 
-$page.setLayout("common/work-layout")
+$page.setLayout("common/default")

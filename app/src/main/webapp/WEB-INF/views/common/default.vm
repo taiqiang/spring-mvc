@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <!--[if lt IE 7]>      <html class="lt-ie9 lt-ie8 lt-ie7"><![endif]-->
 <!--[if IE 7]>         <html class="lt-ie9 lt-ie8"><![endif]-->
 <!--[if IE 8]>         <html class="lt-ie9"><![endif]-->
@@ -6,17 +6,23 @@
 <html lang="zh-CN"><!--<![endif]-->
 <head>
     <meta charset="utf-8" />
-    $page.renderTpl("common-meta")
-    $page.renderTpl("csrf-token", {})
+    #render("common-meta")
+    #render("inline-style")
     <title>
-        $page.getVariable("title", "网站主页") - breakidea.com 中文站
+        #block("title")网站主页#end - $page.getConfig('message.title')
     </title>
+    <script type="text/javascript">
+    F = {"basePath": "#getURI('OK')"};
+    </script>
 </head>
 <body data-page="$page.getPageId()">
     <div class="header">
-        $page.getConfig("message.domain")
+        #message("message.domain")
     </div>
-    $page.getVariable("body")
-    $page.renderTpl("baidu-search")
+
+    $body
+
+    <!-- CSRF-TOKEN -->
+    #render("token", {})
 </body>
 </html>

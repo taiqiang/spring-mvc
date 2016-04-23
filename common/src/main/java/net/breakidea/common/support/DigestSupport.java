@@ -163,6 +163,7 @@ public abstract class DigestSupport {
         if (key == null || key.length() < 8) {
             return key + "12345678".substring(key.length());
         }
+
         return key;
     }
 

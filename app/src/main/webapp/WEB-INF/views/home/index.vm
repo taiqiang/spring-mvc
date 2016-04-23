@@ -1,30 +1,25 @@
-$page.setVariable("title", "页面标题")
-
 #block("title")
     默认标题
 #end
 
-<input value="$page.getToken()" type="hidden" />
-<input value="$page.getTokenName()" type="hidden" />
-<input value="$page.getTokenHeader()" type="hidden" />
-
-$page.getGuid()
+<style>
+pre {
+    white-space: initial;
+    border: 1px dashed #AAA;
+    padding: 10px;
+    margin: 10px;
+    background: #F3F3F3;
+}
+</style>
 
 <script>
-$page.renderTpl("encrypt", {
-    "var": "encrypt",
-    "keyToken": "01g3456789abcdef"
+#render("common/encrypt", {
+    "var": "F.encrypt",
+    "keyToken": "0123456789abcdef"
 })
 </script>
-
 <div class="main">
-    $page.renderTpl("go-search")
-    $page.renderTpl("output.html")
+    #render("output")
 </div>
 
-#set($textMap = ["中文", "1234567890", "Alibaba-inc", "&"])
-#foreach($raw_item in $textMap)
-$page.encrypt($raw_item, "01g3456789abcdef")<br><script>document.write(encrypt("$raw_item"))</script><br><br>
-#end
-
-$page.setLayout("common/default")
+#extends("common/default")

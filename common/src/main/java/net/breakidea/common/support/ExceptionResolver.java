@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.breakidea.common.ConfigConstants;
-import net.breakidea.common.support.view.MappingJsonView;
+import net.breakidea.common.support.view.MappingView;
 import net.breakidea.common.util.WebUtils;
 
 import org.apache.commons.logging.Log;
@@ -32,7 +32,7 @@ import org.springframework.web.servlet.mvc.multiaction.NoSuchRequestHandlingMeth
  * @author apple
  *
  */
-public class SimpleExceptionResolver implements HandlerExceptionResolver, Ordered, ConfigConstants {
+public class ExceptionResolver implements HandlerExceptionResolver, Ordered, ConfigConstants {
 
     protected final Log log = LogFactory.getLog(getClass());
 
@@ -112,7 +112,7 @@ public class SimpleExceptionResolver implements HandlerExceptionResolver, Ordere
         }
 
         if (WebUtils.hasAnnotation(handler)) {
-            mv.setView(MappingJsonView.getInstance());
+            mv.setView(MappingView.getInstance());
             error.responseTo(mv, null);
         } else {
             mv.setViewName(ERROR_VIEW);

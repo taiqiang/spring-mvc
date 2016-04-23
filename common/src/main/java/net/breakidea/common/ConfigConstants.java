@@ -6,7 +6,7 @@ package net.breakidea.common;
  */
 public interface ConfigConstants {
 
-    public static final String CHARSET = "utf-8";
+    public static final String CHARSET = "UTF-8";
 
     public static final String DATA_NAME = "data";
 

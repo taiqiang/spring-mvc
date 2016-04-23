@@ -80,4 +80,17 @@ public abstract class JsonUtils implements ConfigConstants {
     public static String stringify( Object src ) throws UnsupportedOperationException {
         return stringify(src, src.getClass());
     }
+
+    /**
+     * @param src
+     * @param type
+     * @return
+     */
+    public static Object parse( Object src, Type type ) {
+        try {
+            return getInstance().toJson(src, type);
+        } catch (Throwable e) {
+            throw new UnsupportedOperationException(e);
+        }
+    }
 }

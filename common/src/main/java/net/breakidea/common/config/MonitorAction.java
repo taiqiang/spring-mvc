@@ -4,7 +4,7 @@ import java.lang.reflect.Method;
 
 import javax.servlet.http.HttpServletRequest;
 
-import net.breakidea.common.support.view.MappingJsonView;
+import net.breakidea.common.support.view.MappingView;
 import net.breakidea.common.util.WebUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class MonitorAction {
     @Autowired
     private HttpServletRequest request;
 
-    private View view = MappingJsonView.getInstance();
+    private View view = MappingView.getInstance();
 
     /**
      * @param data

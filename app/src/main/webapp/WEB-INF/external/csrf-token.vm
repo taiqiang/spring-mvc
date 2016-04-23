@@ -1,3 +1,0 @@
-<meta name="csrf-param" content="$page.getTokenName()"/>
-<meta name="csrf-token" content="$page.getToken()"/>
-<meta name="csrf-header" content="$page.getTokenHeader()"/>

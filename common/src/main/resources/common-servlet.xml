@@ -26,7 +26,7 @@
                 <prop key="input.encoding">utf-8</prop>
                 <prop key="output.encoding">utf-8</prop>
                 <prop key="velocimacro.library">library.vm,macro.vm</prop>
-                <prop key="eventhandler.referenceinsertion.class">net.breakidea.common.support.view.EscapeHtmlReference</prop>
+                <prop key="eventhandler.referenceinsertion.class">net.breakidea.common.support.view.EscapeReference</prop>
             </props>
         </property>
     </bean>
@@ -38,7 +38,7 @@
             <list>
                 <bean class="org.springframework.web.servlet.view.BeanNameViewResolver" />
                 <bean class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
-                    <property name="viewClass" value="net.breakidea.common.support.view.BetterVelocityView" />
+                    <property name="viewClass" value="net.breakidea.common.support.view.VelocityView" />
                     <property name="suffix" value=".vm" />
                     <property name="toolboxConfigLocation" value="/WEB-INF/toolbox.xml" />
                 </bean>
@@ -52,6 +52,6 @@
     </mvc:interceptors>
 
     <!-- 异常处理 -->
-    <bean class="net.breakidea.common.support.SimpleExceptionResolver" />
+    <bean class="net.breakidea.common.support.ExceptionResolver" />
 
 </beans>

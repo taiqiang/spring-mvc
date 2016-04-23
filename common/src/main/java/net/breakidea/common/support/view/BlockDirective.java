@@ -13,15 +13,12 @@ import org.apache.velocity.runtime.RuntimeServices;
 import org.apache.velocity.runtime.directive.Block;
 import org.apache.velocity.runtime.parser.node.Node;
 import org.apache.velocity.runtime.parser.node.SimpleNode;
-import org.springframework.util.StringUtils;
 
 /**
  * @author apple
  *
  */
 public class BlockDirective extends Block {
-
-    private static final String BLOCK_NAME = "block";
 
     /**
      * Creates an array containing the literal text from the macro
@@ -54,7 +51,7 @@ public class BlockDirective extends Block {
 
     @Override
     public String getName() {
-        return BLOCK_NAME;
+        return "block";
     }
 
     @Override
@@ -68,7 +65,7 @@ public class BlockDirective extends Block {
         super.init(rs, context, node);
 
         if (param.length > 0) {
-            blockName = param[0];
+            blockName = Viewport.PREFIX_NAME + param[0];
         }
     }
 
@@ -78,18 +75,16 @@ public class BlockDirective extends Block {
         Viewport page = (Viewport) context.get(Viewport.CONTEXT_NAME);
         Writer out = new StringWriter();
 
-        if (page instanceof Viewport) {
-            if (!page.isRenderLayout()) {
-                node.jjtGetChild(1).render(context, out);
-                page.setVariable(blockName, out);
+        if (page.isRenderLayout()) {
+            out = (Writer) context.get(blockName);
+            if (out == null) {
+                node.jjtGetChild(1).render(context, writer);
             } else {
-                out = (Writer) page.getVariable(blockName, null);
-                if (out == null) {
-                    node.jjtGetChild(1).render(context, writer);
-                } else {
-                    writer.write(StringUtils.trimWhitespace(out.toString()));
-                }
+                writer.write(out.toString().trim());
             }
+        } else {
+            node.jjtGetChild(1).render(context, out);
+            context.put(blockName, out);
         }
 
         return true;

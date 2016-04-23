@@ -30,10 +30,11 @@ import org.apache.velocity.context.Context;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.FatalBeanException;
+import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.view.velocity.VelocityToolboxView;
 
 /**
- * BetterVelocityView emulates the functionality offered by Velocity's
+ * VelocityView emulates the functionality offered by Velocity's
  * VelocityLayoutServlet to ease page composition from different templates.
  *
  * <p>The {@code url} property should be set to the content template
@@ -51,11 +52,9 @@ import org.springframework.web.servlet.view.velocity.VelocityToolboxView;
  * At runtime, this variable will contain the rendered content template.
  *
  */
-public final class BetterVelocityView extends VelocityToolboxView implements ConfigConstants, RuntimeConstants {
+public final class VelocityView extends VelocityToolboxView implements ConfigConstants, RuntimeConstants {
 
     private Log logger = LogFactory.getLog(getClass());
-
-    private static BetterVelocityView instance = null;
 
     /**
      * Overrides the normal rendering process in order to pre-process the Context,
@@ -67,10 +66,10 @@ public final class BetterVelocityView extends VelocityToolboxView implements Con
     protected void doRender( Context context, HttpServletResponse response ) throws Exception {
         Viewport page = new Viewport(this, context);
 
-        StringWriter body = getMergeContent(getUrl(), context);
+        StringWriter body = mergeTemplate(getUrl(), context);
         String layoutPath = page.getLayout();
 
-        if (layoutPath == null) {
+        if (!StringUtils.hasText(layoutPath)) {
             if (logger.isDebugEnabled()) {
                 logger.debug("No layoutPath was assigned, response it. url:" + getUrl());
             }
@@ -80,23 +79,16 @@ public final class BetterVelocityView extends VelocityToolboxView implements Con
                 logger.debug("Rendering layout [" + layoutPath + "] for url:" + getUrl());
             }
 
-            page.prepareLayout(body);
+            page.setBody(body);
             mergeTemplate(getTemplate(layoutPath), context, response);
         }
-    }
-
-    /**
-     * @return
-     */
-    public static BetterVelocityView getInstance() {
-        return instance;
     }
 
     /**
      * The resulting context contains any mappings from render, plus screen content.
      * @return
      */
-    protected StringWriter getMergeContent( String templateName, Context velocityContext ) throws Exception {
+    public StringWriter mergeTemplate( String templateName, Context velocityContext ) throws Exception {
         StringWriter out = new StringWriter();
 
         if (logger.isDebugEnabled()) {
@@ -121,7 +113,6 @@ public final class BetterVelocityView extends VelocityToolboxView implements Con
         if (velocityEngine == null) {
             velocityEngine = autodetectVelocityEngine();
             velocityEngine.loadDirective(BlockDirective.class.getName());
-            instance = this;
             super.initApplicationContext();
         } else {
             throw new FatalBeanException("init velocity engine with error");

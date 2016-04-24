@@ -86,31 +86,30 @@ public final class VelocityView extends VelocityToolboxView implements ConfigCon
             Properties prop = PropertiesLoaderUtils.loadProperties(ContextUtils.getResource(CONFIG_LOCATION));
             velocityEngine = new VelocityEngine(prop);
         } catch (IOException e) {
-            velocityEngine = new VelocityEngine(new Properties());
+            velocityEngine = new VelocityEngine();
         }
 
         StringBuilder resolvedPath = new StringBuilder();
-        String[] paths = new String[] { "/WEB-INF/views", "classpath:internal", "/WEB-INF/external" };
+        String[] paths = new String[] { "/WEB-INF/views", "/WEB-INF/external" };
 
         for (int i = 0; i < paths.length; i++) {
             String path = paths[i];
             Resource resource = ContextUtils.getResource(path);
-            File file = null;
             try {
-                file = resource.getFile();
+                File file = resource.getFile();
                 resolvedPath.append(file.getAbsolutePath());
                 if (i < paths.length - 1) {
                     resolvedPath.append(',');
                 }
             } catch (IOException e) {
-
+                e.printStackTrace();
             }
         }
 
         // 用户目录
         resolvedPath.append("," + System.getProperty("user.home") + "/output");
 
-        velocityEngine.setProperty(VM_LIBRARY, "library.vm,macro.vm");
+        velocityEngine.setProperty(VM_LIBRARY, "macro.vm");
         velocityEngine.setProperty(RESOURCE_LOADER, "file");
         velocityEngine.setProperty(FILE_RESOURCE_LOADER_CACHE, "true");
         velocityEngine.setProperty(FILE_RESOURCE_LOADER_PATH, resolvedPath.toString());

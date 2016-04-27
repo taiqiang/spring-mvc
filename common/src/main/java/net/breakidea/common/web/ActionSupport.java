@@ -14,6 +14,8 @@ import org.springframework.web.method.HandlerMethod;
  */
 public interface ActionSupport extends ConfigConstants {
 
+    public static final String BLANK_RES = "common/blank";
+
     /**
      * Check the given request
      *

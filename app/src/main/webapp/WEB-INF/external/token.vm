@@ -1,0 +1,3 @@
+<input type="hidden" name="_token" value="$page.getToken()" />
+<input type="hidden" name="_tokenName" value="$page.getTokenName()" />
+<input type="hidden" name="_tokenHeader" value="$page.getTokenHeader()" />

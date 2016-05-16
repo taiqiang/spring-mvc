@@ -1,4 +1,4 @@
-package net.breakidea.common.support.view;
+package net.breakidea.common.view;
 
 import java.io.IOException;
 import java.io.StringWriter;

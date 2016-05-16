@@ -1,4 +1,4 @@
-package net.breakidea.common.support.view;
+package net.breakidea.common.view;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +14,6 @@ import net.breakidea.common.util.ContextUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.runtime.RuntimeConstants;
@@ -65,7 +64,7 @@ public final class VelocityView extends VelocityToolboxView implements ConfigCon
         resolvedPath.append("," + System.getProperty("user.home") + "/output");
 
         velocityEngine.setProperty(VM_LIBRARY, "macro.vm");
-        velocityEngine.setProperty(RESOURCE_LOADER, "file");
+        velocityEngine.setProperty(RESOURCE_LOADER, "file,classpath");
         velocityEngine.setProperty(FILE_RESOURCE_LOADER_CACHE, "true");
         velocityEngine.setProperty(FILE_RESOURCE_LOADER_PATH, resolvedPath.toString());
         velocityEngine.setProperty(EVENTHANDLER_REFERENCEINSERTION, EscapeReference.class.getName());
@@ -74,7 +73,6 @@ public final class VelocityView extends VelocityToolboxView implements ConfigCon
             logger.info("set velocityTemplate loader path: " + resolvedPath);
         }
         velocityEngine.loadDirective(BlockDirective.class.getName());
-
         return velocityEngine;
     }
 

@@ -1,4 +1,4 @@
-package net.breakidea.common.support.view;
+package net.breakidea.common.view;
 
 import java.util.HashMap;
 import java.util.Map;

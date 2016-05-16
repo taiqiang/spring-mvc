@@ -5,8 +5,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.breakidea.common.ConfigConstants;
-import net.breakidea.common.support.view.MappingView;
 import net.breakidea.common.util.WebUtils;
+import net.breakidea.common.view.MappingView;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

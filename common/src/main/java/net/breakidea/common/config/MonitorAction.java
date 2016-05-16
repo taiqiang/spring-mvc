@@ -4,8 +4,8 @@ import java.lang.reflect.Method;
 
 import javax.servlet.http.HttpServletRequest;
 
-import net.breakidea.common.support.view.MappingView;
 import net.breakidea.common.util.WebUtils;
+import net.breakidea.common.view.MappingView;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

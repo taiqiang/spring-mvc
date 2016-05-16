@@ -22,7 +22,7 @@
             <list>
                 <bean class="org.springframework.web.servlet.view.BeanNameViewResolver" />
                 <bean class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
-                    <property name="viewClass" value="net.breakidea.common.support.view.VelocityView" />
+                    <property name="viewClass" value="net.breakidea.common.view.VelocityView" />
                     <property name="suffix" value=".vm" />
                     <property name="toolboxConfigLocation" value="/WEB-INF/toolbox.xml" />
                 </bean>

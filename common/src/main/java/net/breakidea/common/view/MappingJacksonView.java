@@ -21,7 +21,7 @@ import org.springframework.web.servlet.view.AbstractView;
  * @author apple
  *
  */
-public class MappingView extends AbstractView implements ConfigConstants {
+public class MappingJacksonView extends AbstractView implements ConfigConstants {
 
     private final Log log = LogFactory.getLog(getClass());
 
@@ -52,7 +52,7 @@ public class MappingView extends AbstractView implements ConfigConstants {
      */
     public static View getInstance() {
         if (main == null) {
-            main = new MappingView();
+            main = new MappingJacksonView();
         }
         return main;
     }

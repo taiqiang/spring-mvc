@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.breakidea.common.ConfigConstants;
 import net.breakidea.common.util.WebUtils;
-import net.breakidea.common.view.MappingView;
+import net.breakidea.common.view.MappingJacksonView;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -112,7 +112,7 @@ public class ExceptionResolver implements HandlerExceptionResolver, Ordered, Con
         }
 
         if (WebUtils.hasAnnotation(handler)) {
-            mv.setView(MappingView.getInstance());
+            mv.setView(MappingJacksonView.getInstance());
             error.responseTo(mv, null);
         } else {
             mv.setViewName(ERROR_VIEW);

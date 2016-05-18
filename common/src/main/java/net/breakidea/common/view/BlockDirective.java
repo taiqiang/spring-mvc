@@ -20,6 +20,8 @@ import org.apache.velocity.runtime.parser.node.SimpleNode;
  */
 public class BlockDirective extends Block {
 
+    public static final String NAME = BlockDirective.class.getCanonicalName();
+
     /**
      * Creates an array containing the literal text from the macro
      * arguments(s) (including the macro's name as the first arg).

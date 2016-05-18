@@ -105,7 +105,7 @@ public class Viewport implements ConfigConstants {
      */
     private boolean isRenderLayout = false;
 
-    private VelocityView velocityView = null;
+    private TemplateView templateView = null;
 
     private String layoutName = null;
 
@@ -115,9 +115,9 @@ public class Viewport implements ConfigConstants {
      * @param view
      * @param context
      */
-    public Viewport( VelocityView view, Context context ) {
+    public Viewport( TemplateView view, Context context ) {
         this.context = (ViewToolContext) context;
-        this.velocityView = view;
+        this.templateView = view;
 
         this.context.put(SCREEN_KEY, BLANK);
         this.context.put(CONTEXT_NAME, this);
@@ -134,7 +134,7 @@ public class Viewport implements ConfigConstants {
      * @return
      */
     public String getPageId() {
-        return velocityView.getBeanName();
+        return templateView.getBeanName();
     }
 
     /**
@@ -200,7 +200,7 @@ public class Viewport implements ConfigConstants {
             }
 
             VelocityContext velocityContext = new VelocityContext(varMap);
-            writer = velocityView.mergeTemplate(templateName, velocityContext);
+            writer = templateView.mergeTemplate(templateName, velocityContext);
         } catch (Exception e) {
             writer.write("<!-- BAD TEMPLATE: [" + templateName + "] -->");
         }

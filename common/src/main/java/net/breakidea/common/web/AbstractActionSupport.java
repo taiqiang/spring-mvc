@@ -33,6 +33,7 @@ public abstract class AbstractActionSupport implements ActionSupport {
      * @throws WebException
      */
     public boolean checkSessionToken( HttpServletRequest request ) throws WebException {
+
         if (!WebUtils.checkSessionToken(request)) {
             throw new WebException(403, "Access Denied");
         }
